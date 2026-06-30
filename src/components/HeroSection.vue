@@ -6,38 +6,37 @@ import logoMark from '../photos/logo-mark.png'
 
 <template>
   <section id="top" class="relative isolate overflow-hidden">
-    <!-- Full-bleed background photo -->
+    <!-- Full-bleed background photo (blurred for a soft, premium effect) -->
     <img
       :src="heroPhoto"
       alt=""
-      class="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+      class="absolute inset-0 -z-20 h-full w-full scale-110 object-cover object-center blur-[6px]"
       fetchpriority="high"
     />
-    <!-- Legibility scrims: strong on the left where the copy sits, plus a base darken -->
+    <!-- Legibility scrims: flat darken + vignette so centered copy stays crisp -->
     <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute inset-0 bg-ink-950/65"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-950/20"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/40"></div>
+      <div class="absolute inset-0 bg-ink-950/75"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-ink-950/60"></div>
     </div>
 
-    <div class="container-pad flex min-h-[88vh] items-center py-20">
-      <div class="max-w-xl">
+    <div class="container-pad flex min-h-[88vh] items-center justify-center py-20 text-center">
+      <div class="mx-auto flex max-w-2xl flex-col items-center">
         <span class="eyebrow">Energy for adults 30+</span>
 
         <!-- Brand logo as the hero lockup -->
         <img
           :src="logoMark"
           alt="30Up"
-          class="mt-5 w-64 sm:w-80"
+          class="mt-5 w-64 drop-shadow-lg sm:w-80"
           width="854"
           height="326"
         />
 
-        <p class="mt-6 text-3xl font-bold text-white drop-shadow sm:text-4xl">
+        <h1 class="mt-6 text-3xl font-bold text-white drop-shadow-md sm:text-4xl">
           Energy for grown-up life.
-        </p>
+        </h1>
 
-        <p class="mt-5 max-w-lg text-lg leading-relaxed text-slate-200">
+        <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-slate-100 drop-shadow">
           A powdered energy drink mix for adults 30+ — made for work, family,
           workouts, errands, and long days.
         </p>
@@ -58,11 +57,11 @@ import logoMark from '../photos/logo-mark.png'
           </RouterLink>
         </div>
 
-        <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold uppercase tracking-wider text-slate-300">
+        <div class="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs font-semibold uppercase tracking-wider text-slate-200">
           <span>Zero Sugar</span>
-          <span class="text-white/25">•</span>
+          <span class="text-white/30">•</span>
           <span>No Artificial Dyes</span>
-          <span class="text-white/25">•</span>
+          <span class="text-white/30">•</span>
           <span>Caffeine · Electrolytes · B Vitamins</span>
         </div>
       </div>
