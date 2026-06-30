@@ -24,8 +24,8 @@ function closeMenu() {
   >
     <nav class="container-pad flex h-16 items-center justify-between" aria-label="Primary">
       <!-- Logo -->
-      <RouterLink to="/" class="flex items-center gap-1 text-xl font-black tracking-tight">
-        <span class="text-white">30</span><span class="text-razz-400">Up</span>
+      <RouterLink to="/" class="wordmark text-2xl">
+        <span class="text-white">30</span><span class="up">UP</span>
       </RouterLink>
 
       <!-- Desktop nav -->

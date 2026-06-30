@@ -7,8 +7,11 @@
 import { ref } from 'vue'
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  OAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   type User,
@@ -41,6 +44,30 @@ async function logOut() {
   await signOut(auth)
 }
 
+// Google sign-in (provider must be enabled in the Firebase Console).
+async function logInWithGoogle() {
+  const provider = new GoogleAuthProvider()
+  const cred = await signInWithPopup(auth, provider)
+  return cred.user
+}
+
+// Apple sign-in (provider must be enabled + configured in the Firebase Console).
+async function logInWithApple() {
+  const provider = new OAuthProvider('apple.com')
+  provider.addScope('email')
+  provider.addScope('name')
+  const cred = await signInWithPopup(auth, provider)
+  return cred.user
+}
+
 export function useAuth() {
-  return { user, authReady, signUp, logIn, logOut }
+  return {
+    user,
+    authReady,
+    signUp,
+    logIn,
+    logOut,
+    logInWithGoogle,
+    logInWithApple,
+  }
 }

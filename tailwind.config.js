@@ -4,24 +4,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Premium adult energy palette
+        // Premium adult energy palette — tuned to the 30Up packaging
+        // (near-black charcoal, electric blue, gold).
         ink: {
-          900: '#070b18', // deepest charcoal/navy
-          800: '#0a1124', // primary background
-          700: '#101a36', // elevated panels
-          600: '#18244a',
+          950: '#04060a', // deepest black
+          900: '#07090f', // footer / deep sections
+          800: '#0b0e15', // primary background
+          700: '#121724', // elevated panels
+          600: '#1b2230', // borders / hovers
         },
         razz: {
-          // Electric blue (Blue Razz)
-          400: '#5cc8ff',
-          500: '#38bdf8',
-          600: '#0ea5e9',
+          // Electric blue (Blue Razz) — matches the logo/pack blue
+          300: '#7ab6ff',
+          400: '#4d9bff',
+          500: '#2a8cff',
+          600: '#0f6fe6',
+          700: '#0a55b8',
         },
         lemon: {
-          // Lemon yellow (Lemonade)
-          300: '#ffe066',
-          400: '#fdd835',
-          500: '#f5c518',
+          // Gold/lemon accent (Lemonade)
+          300: '#ffd95e',
+          400: '#f7c01a',
+          500: '#e0a800',
         },
       },
       fontFamily: {
@@ -37,11 +41,11 @@ export default {
         ],
       },
       boxShadow: {
-        glow: '0 0 60px -12px rgba(56, 189, 248, 0.45)',
-        card: '0 20px 50px -20px rgba(0, 0, 0, 0.6)',
+        glow: '0 0 60px -12px rgba(42, 140, 255, 0.5)',
+        card: '0 24px 60px -24px rgba(0, 0, 0, 0.75)',
       },
       backgroundImage: {
-        'razz-lemon': 'linear-gradient(135deg, #38bdf8 0%, #fdd835 100%)',
+        'razz-lemon': 'linear-gradient(135deg, #2a8cff 0%, #f7c01a 100%)',
       },
       borderRadius: {
         '2xl': '1.25rem',

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import productPhoto from '../photos/30up2.png'
+import productPhoto from '../photos/30up_pour_01.png'
 
 interface Feature {
   title: string
@@ -39,9 +39,9 @@ const features: Feature[] = [
         <img
           :src="productPhoto"
           alt="A 30Up Blue Razz Lemonade stick pack being poured into a reusable water bottle"
-          class="w-full rounded-[2rem] border border-white/15 object-cover shadow-card"
-          width="1131"
-          height="1414"
+          class="w-full rounded-[2rem] border border-white/10 object-cover shadow-card"
+          width="1456"
+          height="1092"
           loading="lazy"
         />
       </div>

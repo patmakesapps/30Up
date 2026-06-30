@@ -11,6 +11,11 @@
 
   body {
     @apply bg-ink-800 text-slate-100 antialiased;
+    /* Subtle ambient depth — faint blue/gold glows fixed behind content */
+    background-image:
+      radial-gradient(60rem 60rem at 80% -10%, rgba(42, 140, 255, 0.08), transparent 60%),
+      radial-gradient(50rem 50rem at 0% 20%, rgba(247, 192, 26, 0.05), transparent 55%);
+    background-attachment: fixed;
   }
 
   /* Respect users who prefer reduced motion */
@@ -48,11 +53,11 @@
   }
 
   .btn-primary {
-    @apply btn bg-razz-500 text-ink-900 shadow-glow hover:bg-razz-400 hover:-translate-y-0.5;
+    @apply btn bg-razz-500 text-white shadow-glow hover:bg-razz-400 hover:-translate-y-0.5;
   }
 
   .btn-secondary {
-    @apply btn border border-white/15 bg-white/5 text-white hover:bg-white/10;
+    @apply btn border border-white/15 bg-white/5 text-white hover:border-white/25 hover:bg-white/10;
   }
 
   .section-title {
@@ -60,6 +65,14 @@
   }
 
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.2em] text-razz-400;
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-razz-400;
+  }
+
+  /* Wordmark used in the header/footer to match the logo lockup */
+  .wordmark {
+    @apply font-black tracking-tight;
+  }
+  .wordmark .up {
+    @apply text-razz-400;
   }
 }

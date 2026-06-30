@@ -3,6 +3,7 @@ import HeroSection from '../components/HeroSection.vue'
 import ProblemSection from '../components/ProblemSection.vue'
 import ProductSection from '../components/ProductSection.vue'
 import AudienceSection from '../components/AudienceSection.vue'
+import LifestyleBand from '../components/LifestyleBand.vue'
 import FormulaSection from '../components/FormulaSection.vue'
 import WaitlistSection from '../components/WaitlistSection.vue'
 import FounderSection from '../components/FounderSection.vue'
@@ -14,6 +15,7 @@ import FaqSection from '../components/FaqSection.vue'
   <ProblemSection />
   <ProductSection />
   <AudienceSection />
+  <LifestyleBand />
   <FormulaSection />
   <WaitlistSection />
   <FounderSection />

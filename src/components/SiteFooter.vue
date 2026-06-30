@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import logo from '../photos/logo.png'
+
 const socials = [
   { label: 'Instagram', href: '#' },
   { label: 'TikTok', href: '#' },
@@ -11,10 +13,7 @@ const socials = [
     <div class="container-pad py-14">
       <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
         <div>
-          <p class="text-2xl font-black tracking-tight">
-            <span class="text-white">30</span><span class="text-razz-400">Up</span>
-          </p>
-          <p class="mt-2 text-slate-400">Energy for grown-up life.</p>
+          <img :src="logo" alt="30Up — Energy for grown-up life" class="w-44" />
         </div>
 
         <nav aria-label="Social links">

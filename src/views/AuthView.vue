@@ -2,8 +2,9 @@
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import logo from '../photos/logo.png'
 
-const { signUp, logIn } = useAuth()
+const { signUp, logIn, logInWithGoogle, logInWithApple } = useAuth()
 const router = useRouter()
 const route = useRoute()
 
@@ -34,9 +35,19 @@ function friendlyError(code: string): string {
     case 'auth/wrong-password':
     case 'auth/user-not-found':
       return 'Incorrect email or password.'
+    case 'auth/popup-closed-by-user':
+    case 'auth/cancelled-popup-request':
+      return 'Sign-in was cancelled.'
+    case 'auth/account-exists-with-different-credential':
+      return 'An account already exists with this email using a different sign-in method.'
     default:
       return 'Something went wrong. Please try again.'
   }
+}
+
+function goNext() {
+  const redirect = (route.query.redirect as string) || '/account'
+  router.push(redirect)
 }
 
 async function handleSubmit() {
@@ -50,12 +61,25 @@ async function handleSubmit() {
     } else {
       await logIn(form.email.trim(), form.password)
     }
-    // Send them to where they were headed, or the account page.
-    const redirect = (route.query.redirect as string) || '/account'
-    router.push(redirect)
+    goNext()
   } catch (err) {
-    const code = (err as { code?: string }).code ?? ''
-    errorMsg.value = friendlyError(code)
+    errorMsg.value = friendlyError((err as { code?: string }).code ?? '')
+  } finally {
+    submitting.value = false
+  }
+}
+
+async function handleSocial(provider: 'google' | 'apple') {
+  if (submitting.value) return
+  submitting.value = true
+  errorMsg.value = null
+
+  try {
+    if (provider === 'google') await logInWithGoogle()
+    else await logInWithApple()
+    goNext()
+  } catch (err) {
+    errorMsg.value = friendlyError((err as { code?: string }).code ?? '')
   } finally {
     submitting.value = false
   }
@@ -75,6 +99,10 @@ function switchMode(next: 'login' | 'signup') {
 
     <div class="container-pad">
       <div class="glass mx-auto max-w-md p-8 shadow-card sm:p-10">
+        <RouterLink to="/" class="mx-auto mb-6 block w-40">
+          <img :src="logo" alt="30Up — Energy for grown-up life" class="w-full" />
+        </RouterLink>
+
         <h1 class="text-center text-3xl font-extrabold text-white">
           {{ mode === 'signup' ? 'Create your account' : 'Welcome back' }}
         </h1>
@@ -106,7 +134,43 @@ function switchMode(next: 'login' | 'signup') {
           </button>
         </div>
 
-        <form class="mt-6 grid gap-5" novalidate @submit.prevent="handleSubmit">
+        <!-- Social sign-in -->
+        <div class="mt-6 grid gap-3">
+          <button
+            type="button"
+            class="btn-secondary w-full"
+            :disabled="submitting"
+            @click="handleSocial('google')"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+              <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+              <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0124 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+              <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 01-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+            </svg>
+            Continue with Google
+          </button>
+          <button
+            type="button"
+            class="btn-secondary w-full"
+            :disabled="submitting"
+            @click="handleSocial('apple')"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.89-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.88 2.65 3.22 2.6 1.29-.05 1.78-.83 3.34-.83 1.56 0 2 .83 3.37.81 1.39-.03 2.27-1.27 3.12-2.53.98-1.45 1.39-2.85 1.41-2.92-.03-.01-2.7-1.04-2.73-4.13zM14.53 4.42c.71-.86 1.19-2.05 1.06-3.24-1.02.04-2.26.68-2.99 1.54-.66.76-1.23 1.98-1.08 3.14 1.14.09 2.3-.58 3.01-1.44z"/>
+            </svg>
+            Continue with Apple
+          </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-6 flex items-center gap-3 text-xs uppercase tracking-wider text-slate-500">
+          <span class="h-px flex-1 bg-white/10"></span>
+          or use email
+          <span class="h-px flex-1 bg-white/10"></span>
+        </div>
+
+        <form class="grid gap-5" novalidate @submit.prevent="handleSubmit">
           <div v-if="mode === 'signup'">
             <label for="name" class="mb-2 block text-sm font-semibold text-white">
               Name <span class="font-normal text-slate-400">(optional)</span>

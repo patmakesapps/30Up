@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import powderPhoto from '../photos/30up_powder_close_up.png'
+
 const ingredients = [
   'Moderate caffeine',
   'Electrolytes',
@@ -12,18 +14,33 @@ const ingredients = [
 <template>
   <section class="relative py-20">
     <div class="container-pad">
-      <div class="glass overflow-hidden p-8 shadow-card sm:p-12">
-        <div class="mx-auto max-w-3xl text-center">
+      <div class="glass grid items-center gap-10 overflow-hidden p-8 shadow-card sm:p-12 lg:grid-cols-2">
+        <!-- Powder macro photo -->
+        <div class="relative order-last lg:order-first">
+          <div
+            class="absolute -inset-4 -z-10 rounded-[2.5rem] bg-razz-600/20 blur-3xl"
+            aria-hidden="true"
+          ></div>
+          <img
+            :src="powderPhoto"
+            alt="Close-up of 30Up Blue Razz Lemonade powder pouring from a stick pack"
+            class="w-full rounded-[1.75rem] border border-white/10 object-cover shadow-card"
+            width="1456"
+            height="1092"
+            loading="lazy"
+          />
+        </div>
+
+        <div>
           <span class="eyebrow">In development</span>
           <h2 class="section-title mt-3">Planned formula direction.</h2>
-          <p class="mt-6 text-lg text-slate-300">
+          <p class="mt-6 text-lg leading-relaxed text-slate-300">
             We're currently exploring a formula direction built around useful
             adult energy support, hydration support, and flavor that does not
             taste like a melted gas-station slushie.
           </p>
-        </div>
 
-        <ul class="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
+        <ul class="mt-8 grid gap-3 sm:grid-cols-2">
           <li
             v-for="item in ingredients"
             :key="item"
@@ -41,13 +58,14 @@ const ingredients = [
           </li>
         </ul>
 
-        <p
-          class="mx-auto mt-10 max-w-2xl rounded-2xl border border-lemon-400/20 bg-lemon-400/5 px-6 py-4 text-center text-sm text-slate-300"
-        >
-          <strong class="font-semibold text-lemon-300">Please note:</strong>
-          Final formula, caffeine amount, ingredients, packaging, and claims are
-          subject to change before launch.
-        </p>
+          <p
+            class="mt-8 rounded-2xl border border-lemon-400/20 bg-lemon-400/5 px-6 py-4 text-sm text-slate-300"
+          >
+            <strong class="font-semibold text-lemon-300">Please note:</strong>
+            Final formula, caffeine amount, ingredients, packaging, and claims
+            are subject to change before launch.
+          </p>
+        </div>
       </div>
     </div>
   </section>

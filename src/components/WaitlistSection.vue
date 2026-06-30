@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
+import BaseSelect from './BaseSelect.vue'
 
 interface WaitlistForm {
   email: string
@@ -163,15 +164,12 @@ async function handleSubmit() {
             <label for="ageRange" class="mb-2 block text-sm font-semibold text-white">
               Age range
             </label>
-            <select
+            <BaseSelect
               id="ageRange"
               v-model="form.ageRange"
-              name="ageRange"
-              class="w-full rounded-xl border border-white/15 bg-ink-900/60 px-4 py-3 text-white focus:border-razz-400"
-            >
-              <option value="" disabled>Select your age range</option>
-              <option v-for="opt in ageRanges" :key="opt" :value="opt">{{ opt }}</option>
-            </select>
+              :options="ageRanges"
+              placeholder="Select your age range"
+            />
           </div>
 
           <!-- Would you buy -->
@@ -179,15 +177,12 @@ async function handleSubmit() {
             <label for="wouldBuy" class="mb-2 block text-sm font-semibold text-white">
               Would you buy 30Up Blue Razz Lemonade?
             </label>
-            <select
+            <BaseSelect
               id="wouldBuy"
               v-model="form.wouldBuy"
-              name="wouldBuy"
-              class="w-full rounded-xl border border-white/15 bg-ink-900/60 px-4 py-3 text-white focus:border-razz-400"
-            >
-              <option value="" disabled>Select an option</option>
-              <option v-for="opt in buyOptions" :key="opt" :value="opt">{{ opt }}</option>
-            </select>
+              :options="buyOptions"
+              placeholder="Select an option"
+            />
           </div>
 
           <!-- Caffeine level -->
@@ -195,15 +190,12 @@ async function handleSubmit() {
             <label for="caffeineLevel" class="mb-2 block text-sm font-semibold text-white">
               Preferred caffeine level
             </label>
-            <select
+            <BaseSelect
               id="caffeineLevel"
               v-model="form.caffeineLevel"
-              name="caffeineLevel"
-              class="w-full rounded-xl border border-white/15 bg-ink-900/60 px-4 py-3 text-white focus:border-razz-400"
-            >
-              <option value="" disabled>Select a caffeine level</option>
-              <option v-for="opt in caffeineLevels" :key="opt" :value="opt">{{ opt }}</option>
-            </select>
+              :options="caffeineLevels"
+              placeholder="Select a caffeine level"
+            />
           </div>
 
           <!-- Current energy source -->
@@ -211,15 +203,12 @@ async function handleSubmit() {
             <label for="energySource" class="mb-2 block text-sm font-semibold text-white">
               Current energy source
             </label>
-            <select
+            <BaseSelect
               id="energySource"
               v-model="form.energySource"
-              name="energySource"
-              class="w-full rounded-xl border border-white/15 bg-ink-900/60 px-4 py-3 text-white focus:border-razz-400"
-            >
-              <option value="" disabled>Select your current go-to</option>
-              <option v-for="opt in energySources" :key="opt" :value="opt">{{ opt }}</option>
-            </select>
+              :options="energySources"
+              placeholder="Select your current go-to"
+            />
           </div>
 
           <!-- Optional message -->

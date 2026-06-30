@@ -1,89 +1,106 @@
+<div align="center">
+
+<img src="src/photos/logo.png" alt="30Up — Energy for grown-up life" width="420" />
+
 # 30Up — Energy for Grown-Up Life
 
-A modern, responsive launch/waitlist landing page for **30Up**, a powdered energy
-drink mix concept for adults 30+. First flavor: **Blue Razz Lemonade**.
+A modern, responsive launch & waitlist site for **30Up**, a powdered energy
+drink mix for adults 30+. First flavor: **Blue Razz Lemonade**.
 
-Built with **Vue 3 + Vite + TypeScript + Tailwind CSS**.
+Built with **Vue 3 · Vite · TypeScript · Tailwind CSS · Firebase**
 
-## Getting started
+</div>
+
+---
+
+<div align="center">
+<img src="src/photos/package_01.png" alt="30Up Blue Razz Lemonade box and stick pack" width="80%" />
+</div>
+
+## ✨ Highlights
+
+- **Premium, brand-matched design** — near-black charcoal, electric blue, and gold,
+  styled directly from the 30Up packaging.
+- **Single-page responsive landing** — hero, problem, product, audience, a
+  full-bleed lifestyle band, planned-formula, waitlist, founder, and an
+  accessible FAQ accordion.
+- **Waitlist → Firestore** — real submissions with validation and loading/error states.
+- **Accounts** — email/password **plus Google & Apple** sign-in (Firebase Auth).
+- **Protected dashboard** (`/account`) — profile, first-batch status, and an
+  order/transaction-history area ready for launch.
+- **Custom UI components** — a fully keyboard-accessible dropdown (`BaseSelect`)
+  replaces native `<select>`s, plus an ARIA accordion.
+
+## 🚀 Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then open the local URL Vite prints (default http://localhost:5173).
+Open the URL Vite prints (default http://localhost:5173).
 
-## Scripts
+```bash
+npm run build     # type-check + production build → dist/
+npm run preview   # preview the production build
+```
 
-- `npm run dev` — start the dev server
-- `npm run build` — type-check and build for production (output in `dist/`)
-- `npm run preview` — preview the production build locally
+## 🔥 Firebase setup
 
-## Project structure
+This project uses Firebase (Firestore + Auth) for project **`up-3fcd5`**.
+
+1. **Register a Web app** (Project settings → General → `</>`).
+2. **Create `.env`** from `.env.example` and add `VITE_FIREBASE_API_KEY` and
+   `VITE_FIREBASE_APP_ID`. `.env` is git-ignored; Firebase web config values are
+   not secrets — Firestore Security Rules control access.
+3. **Enable Firestore**, then **publish the rules** in [`firestore.rules`](firestore.rules)
+   (Firestore → Rules → paste → Publish). Until you do, writes are denied.
+4. **Enable sign-in providers** (Authentication → Sign-in method):
+   Email/Password, Google, Apple.
+
+## 📸 The product
+
+<table>
+  <tr>
+    <td width="50%"><img src="src/photos/30up_pour_01.png" alt="Pouring a 30Up stick pack into a water bottle" /></td>
+    <td width="50%"><img src="src/photos/30up_fitness.png" alt="30Up shaker bottle with a dumbbell and gym towel" /></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="src/photos/30up_powder_close_up.png" alt="Close-up of 30Up powder pouring from a stick pack" /></td>
+    <td width="50%"><img src="src/photos/30up_water_close_up.png" alt="Top-down macro of electric-blue Blue Razz Lemonade" /></td>
+  </tr>
+</table>
+
+## 🗂 Project structure
 
 ```
-index.html              # SEO + Open Graph meta, app mount point
+index.html              # SEO + Open Graph/Twitter meta, favicon
+public/                 # og-image.png (social share)
 src/
-  main.ts               # App bootstrap
-  App.vue               # Composes all page sections
-  style.css             # Tailwind layers + design tokens/components
-  components/
-    SiteHeader.vue      # Sticky nav + mobile menu
-    HeroSection.vue     # Hero copy + CSS product mockup
-    ProductMockup.vue   # Pure-CSS pouch/stick-pack mockup (no image asset)
-    ProblemSection.vue
-    ProductSection.vue
-    AudienceSection.vue
-    FormulaSection.vue
-    WaitlistSection.vue # First-batch form → Firestore
-    FounderSection.vue
-    FaqSection.vue      # Accessible accordion
-    SiteFooter.vue
+  main.ts               # App bootstrap + router
+  App.vue               # Header + <RouterView> + Footer shell
+  firebase.ts           # Firebase init (Firestore, Auth, Analytics)
+  style.css             # Tailwind layers + design tokens
+  composables/
+    useAuth.ts          # App-wide auth state + email/Google/Apple helpers
+  router/
+    index.ts            # Routes + auth guard + hash scroll
   views/
     HomeView.vue        # Landing page (all sections)
-    AuthView.vue        # Login / signup
+    AuthView.vue        # Login / signup (+ social)
     AccountView.vue     # Protected dashboard + order-history placeholder
-  composables/
-    useAuth.ts          # App-wide Firebase Auth state
-  router/
-    index.ts            # Routes + auth guard
-  firebase.ts           # Firebase init (Firestore + Auth)
+  components/
+    SiteHeader.vue  SiteFooter.vue
+    HeroSection.vue  ProblemSection.vue  ProductSection.vue
+    AudienceSection.vue  LifestyleBand.vue  FormulaSection.vue
+    WaitlistSection.vue  FounderSection.vue  FaqSection.vue
+    BaseSelect.vue      # Custom accessible dropdown
+  photos/               # Brand photography + logo
 firestore.rules         # Waitlist security rules
 .env.example            # Firebase config template
 ```
 
-## Firebase setup
-
-This project uses **Firebase** (Firestore for the waitlist, Auth for accounts).
-
-1. **Register a Web app** in the Firebase Console
-   (Project settings → General → *Your apps* → `</>`). Copy the config values.
-2. **Create `.env`** from `.env.example` and paste in `VITE_FIREBASE_API_KEY`
-   and `VITE_FIREBASE_APP_ID` (the rest are pre-filled for project `up-3fcd5`).
-   `.env` is git-ignored. Firebase web config values are **not secrets** —
-   access is controlled by Firestore Security Rules.
-3. **Enable Firestore** (Build → Firestore Database → Create database).
-4. **Publish the rules** in `firestore.rules` (Firestore → Rules → paste → Publish).
-5. **Enable Email/Password auth** (Build → Authentication → Sign-in method).
-
-### Waitlist form
-
-`src/components/WaitlistSection.vue` writes submissions to the `waitlist`
-Firestore collection (`addDoc`) with client-side validation, loading, and error
-states. View signups in the Firebase Console.
-
-### Accounts & dashboard
-
-- `/login` — sign up / log in (Firebase Auth, email + password)
-- `/account` — protected dashboard (profile, first-batch status, and an
-  **order/transaction history placeholder** ready to be wired to a future
-  `orders` collection — see the `TODO` in `src/views/AccountView.vue`)
-
-Auth state lives in `src/composables/useAuth.ts`; route protection is in
-`src/router/index.ts`.
-
-## Notes
+## ⚠️ Disclaimer
 
 30Up is in development. Product names, formulas, packaging, claims, caffeine
 levels, ingredients, and availability are subject to change. This site is for
