@@ -11,10 +11,11 @@ import fitnessPhoto from '../photos/30up_fitness.png'
       class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover blur-[2px]"
       loading="lazy"
     />
-    <!-- Legibility scrims (copy lives on the left) -->
+    <!-- Legibility scrims: flat darken + soft radial glow behind the copy (left) -->
     <div class="absolute inset-0 -z-10" aria-hidden="true">
       <div class="absolute inset-0 bg-ink-950/55"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-950/20"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(55%_85%_at_26%_50%,rgba(4,6,10,0.8),transparent_70%)]"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/65 to-transparent"></div>
     </div>
 
     <div class="container-pad relative py-24 sm:py-32">
