@@ -20,3 +20,6 @@ yarn-error.log*
 # Local dev logs
 vite-dev.log
 *.log
+
+# Firebase deploy cache
+.firebase/
