@@ -13,21 +13,22 @@ import logoMark from '../photos/logo-mark.png'
       class="absolute inset-0 -z-20 h-full w-full scale-110 object-cover object-center blur-[6px]"
       fetchpriority="high"
     />
-    <!-- Legibility scrims: flat darken + vignette so centered copy stays crisp -->
+    <!-- Legibility scrims: flat darken + centered radial so the logo/copy stay crisp -->
     <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute inset-0 bg-ink-950/75"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-ink-950/60"></div>
+      <div class="absolute inset-0 bg-ink-950/70"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_44%,rgba(4,6,10,0.7),transparent_72%)]"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/55"></div>
     </div>
 
     <div class="container-pad flex min-h-[88vh] items-center justify-center py-20 text-center">
       <div class="mx-auto flex max-w-2xl flex-col items-center">
         <span class="eyebrow">Energy for adults 30+</span>
 
-        <!-- Brand logo as the hero lockup -->
+        <!-- Brand logo as the hero lockup (dark halo keeps the blue "UP" crisp) -->
         <img
           :src="logoMark"
           alt="30Up"
-          class="mt-5 w-64 drop-shadow-lg sm:w-80"
+          class="mt-5 w-64 [filter:drop-shadow(0_0_5px_rgba(4,6,10,0.95))_drop-shadow(0_4px_16px_rgba(4,6,10,0.75))] sm:w-80"
           width="854"
           height="326"
         />
