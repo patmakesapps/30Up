@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import pourPhoto from '../photos/30up_pour_01.png'
+import fitnessPhoto from '../photos/30up_fitness.png'
 </script>
 
 <template>
   <section class="relative isolate overflow-hidden">
     <!-- Full-bleed photo -->
     <img
-      :src="pourPhoto"
-      alt="A 30Up Blue Razz Lemonade stick pack being poured into a water bottle"
+      :src="fitnessPhoto"
+      alt="30Up shaker bottle with electric-blue Blue Razz Lemonade beside a dumbbell and gym towel"
       class="absolute inset-0 -z-20 h-full w-full object-cover"
       loading="lazy"
     />
@@ -19,15 +19,14 @@ import pourPhoto from '../photos/30up_pour_01.png'
 
     <div class="container-pad relative py-24 sm:py-32">
       <div class="max-w-xl">
-        <span class="eyebrow">Just add water</span>
+        <span class="eyebrow">Energy for your era</span>
         <p class="mt-4 text-3xl font-extrabold leading-tight text-white drop-shadow sm:text-4xl">
-          Mixes clean into water or your shaker —
-          <span class="text-razz-400">no canned chaos.</span>
+          For workouts, walks, and weekend projects —
+          <span class="text-razz-400">without the pre-workout chaos.</span>
         </p>
         <p class="mt-5 max-w-md text-lg text-slate-200">
-          A portable powder built for early mornings, long shifts, and the second
-          half of the day. Bright Blue Razz Lemonade, made for the way grown-ups
-          actually move.
+          Mixes clean into water or your shaker. Bright Blue Razz Lemonade,
+          built to fit the way grown-ups actually move.
         </p>
       </div>
     </div>

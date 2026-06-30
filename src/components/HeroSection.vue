@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import heroPhoto from '../photos/30up_fitness.png'
+import heroPhoto from '../photos/30up_water_close_up.png'
 import logoMark from '../photos/logo-mark.png'
 </script>
 
@@ -15,8 +15,8 @@ import logoMark from '../photos/logo-mark.png'
     />
     <!-- Legibility scrims: strong on the left where the copy sits, plus a base darken -->
     <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute inset-0 bg-ink-950/55"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-transparent"></div>
+      <div class="absolute inset-0 bg-ink-950/65"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/90 to-ink-950/20"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/40"></div>
     </div>
 

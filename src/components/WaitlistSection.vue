@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 import BaseSelect from './BaseSelect.vue'
-import waterPhoto from '../photos/30up_water_close_up.png'
+import pourPhoto from '../photos/30up_pour_01.png'
 
 interface WaitlistForm {
   email: string
@@ -95,9 +95,9 @@ async function handleSubmit() {
   <section id="waitlist" class="relative overflow-hidden py-20">
     <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
       <img
-        :src="waterPhoto"
+        :src="pourPhoto"
         alt=""
-        class="absolute -left-32 -top-24 h-[34rem] w-[34rem] rounded-full object-cover opacity-15 blur-2xl"
+        class="absolute -left-32 -top-24 h-[34rem] w-[34rem] rounded-full object-cover opacity-10 blur-2xl"
         loading="lazy"
       />
       <div class="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-razz-600/20 blur-[120px]"></div>
