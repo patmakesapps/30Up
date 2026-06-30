@@ -1,0 +1,25 @@
+rules_version = '2';
+
+// Security rules for the 30Up waitlist.
+//
+// Goal: let anyone SUBMIT to the waitlist from the website, but never let the
+// public READ, UPDATE, or DELETE entries (so emails stay private).
+//
+// Deploy via the Firebase Console (Firestore Database → Rules → paste → Publish)
+// or the CLI: `firebase deploy --only firestore:rules`
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /waitlist/{docId} {
+      // Public can create new signups, with light validation.
+      allow create: if
+        request.resource.data.email is string &&
+        request.resource.data.email.size() > 3 &&
+        request.resource.data.email.size() < 320;
+
+      // No public reads/edits/deletes — view entries in the Firebase Console.
+      allow read, update, delete: if false;
+    }
+  }
+}
