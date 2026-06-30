@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/photos/logo.png" alt="30Up — Energy for grown-up life" width="420" />
+<img src="src/photos/logo-full.png" alt="30Up — Energy for grown-up life" width="420" />
 
 # 30Up — Energy for Grown-Up Life
 
@@ -25,7 +25,7 @@ Built with **Vue 3 · Vite · TypeScript · Tailwind CSS · Firebase**
   full-bleed lifestyle band, planned-formula, waitlist, founder, and an
   accessible FAQ accordion.
 - **Waitlist → Firestore** — real submissions with validation and loading/error states.
-- **Accounts** — email/password **plus Google & Apple** sign-in (Firebase Auth).
+- **Accounts** — email/password **plus Google** sign-in (Firebase Auth).
 - **Protected dashboard** (`/account`) — profile, first-batch status, and an
   order/transaction-history area ready for launch.
 - **Custom UI components** — a fully keyboard-accessible dropdown (`BaseSelect`)
@@ -56,7 +56,7 @@ This project uses Firebase (Firestore + Auth) for project **`up-3fcd5`**.
 3. **Enable Firestore**, then **publish the rules** in [`firestore.rules`](firestore.rules)
    (Firestore → Rules → paste → Publish). Until you do, writes are denied.
 4. **Enable sign-in providers** (Authentication → Sign-in method):
-   Email/Password, Google, Apple.
+   Email/Password and Google.
 
 ## 📸 The product
 
@@ -82,12 +82,12 @@ src/
   firebase.ts           # Firebase init (Firestore, Auth, Analytics)
   style.css             # Tailwind layers + design tokens
   composables/
-    useAuth.ts          # App-wide auth state + email/Google/Apple helpers
+    useAuth.ts          # App-wide auth state + email/Google helpers
   router/
     index.ts            # Routes + auth guard + hash scroll
   views/
     HomeView.vue        # Landing page (all sections)
-    AuthView.vue        # Login / signup (+ social)
+    AuthView.vue        # Login / signup (+ Google)
     AccountView.vue     # Protected dashboard + order-history placeholder
   components/
     SiteHeader.vue  SiteFooter.vue

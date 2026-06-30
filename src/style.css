@@ -67,12 +67,4 @@
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-[0.22em] text-razz-400;
   }
-
-  /* Wordmark used in the header/footer to match the logo lockup */
-  .wordmark {
-    @apply font-black tracking-tight;
-  }
-  .wordmark .up {
-    @apply text-razz-400;
-  }
 }

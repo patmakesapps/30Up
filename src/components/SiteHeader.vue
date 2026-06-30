@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuth } from '../composables/useAuth'
+import logoMark from '../photos/logo-mark.png'
 
 // Section links resolve to the home route + hash so they work from any page.
 const navLinks = [
@@ -24,8 +25,8 @@ function closeMenu() {
   >
     <nav class="container-pad flex h-16 items-center justify-between" aria-label="Primary">
       <!-- Logo -->
-      <RouterLink to="/" class="wordmark text-2xl">
-        <span class="text-white">30</span><span class="up">UP</span>
+      <RouterLink to="/" class="flex items-center" aria-label="30Up home">
+        <img :src="logoMark" alt="30Up" class="h-8 w-auto" width="854" height="326" />
       </RouterLink>
 
       <!-- Desktop nav -->
