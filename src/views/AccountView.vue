@@ -58,18 +58,19 @@ async function handleLogout() {
         </dl>
       </div>
 
-      <!-- First batch status -->
-      <div class="glass p-7 shadow-card">
-        <h2 class="text-lg font-bold text-white">First batch status</h2>
-        <p
-          class="mt-4 inline-flex items-center gap-2 rounded-full border border-razz-500/30 bg-razz-500/10 px-3 py-1 text-sm font-semibold text-razz-400"
-        >
-          <span class="h-2 w-2 rounded-full bg-razz-400"></span>
-          On the list
-        </p>
+      <!-- First batch -->
+      <div class="glass flex flex-col p-7 shadow-card">
+        <h2 class="text-lg font-bold text-white">First batch</h2>
         <p class="mt-4 text-sm text-slate-400">
-          We'll email you here when samples or preorders open.
+          Want first dibs? Join the first batch list to vote on product direction
+          and get notified when samples or preorders open.
         </p>
+        <RouterLink
+          :to="{ path: '/', hash: '#waitlist' }"
+          class="btn-primary mt-5 self-start"
+        >
+          Join the First Batch
+        </RouterLink>
       </div>
 
       <!-- Order / transaction history (placeholder for now) -->
