@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import logo from '../photos/logo-full.png'
+import logo from '../photos/logo-full.webp'
 
 const socials = [
   { label: 'Instagram', href: '#' },
@@ -13,7 +13,7 @@ const socials = [
     <div class="container-pad py-14">
       <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
         <div>
-          <img :src="logo" alt="30Up — Energy for grown-up life" class="w-44" />
+          <img :src="logo" alt="30Up logo" class="w-44" />
         </div>
 
         <nav aria-label="Social links">

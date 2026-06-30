@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuth } from '../composables/useAuth'
-import logoMark from '../photos/logo-mark.png'
+import logoMark from '../photos/logo-mark.webp'
 
 // Section links resolve to the home route + hash so they work from any page.
 const navLinks = [

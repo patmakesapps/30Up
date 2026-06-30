@@ -49,7 +49,7 @@ async function handleLogout() {
         <dl class="mt-4 space-y-3 text-sm">
           <div>
             <dt class="text-slate-400">Name</dt>
-            <dd class="font-medium text-white">{{ user?.displayName || '—' }}</dd>
+            <dd class="font-medium text-white">{{ user?.displayName || 'Not set' }}</dd>
           </div>
           <div>
             <dt class="text-slate-400">Email</dt>

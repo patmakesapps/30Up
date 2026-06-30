@@ -13,7 +13,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'What does 30Up mean?',
-    a: '30Up means adults 30 and up. It is energy for grown-up life — work, family, workouts, errands, and long days.',
+    a: '30Up means adults 30 and up. It is energy for grown-up life: work, family, workouts, errands, and long days.',
   },
   {
     q: 'Will 30Up have caffeine?',

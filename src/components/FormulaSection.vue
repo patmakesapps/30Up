@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import powderPhoto from '../photos/30up_powder_close_up.png'
+import powderPhoto from '../photos/30up_powder_close_up.webp'
 
 const ingredients = [
   'Moderate caffeine',

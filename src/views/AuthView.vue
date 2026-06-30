@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
-import logo from '../photos/logo-full.png'
+import logo from '../photos/logo-full.webp'
 
 const { signUp, logIn, logInWithGoogle } = useAuth()
 const router = useRouter()
@@ -99,7 +99,7 @@ function switchMode(next: 'login' | 'signup') {
     <div class="container-pad">
       <div class="glass mx-auto max-w-md p-8 shadow-card sm:p-10">
         <RouterLink to="/" class="mx-auto mb-6 block w-40">
-          <img :src="logo" alt="30Up — Energy for grown-up life" class="w-full" />
+          <img :src="logo" alt="30Up logo" class="w-full" />
         </RouterLink>
 
         <h1 class="text-center text-3xl font-extrabold text-white">

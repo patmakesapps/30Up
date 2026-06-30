@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import fitnessPhoto from '../photos/30up_fitness.png'
+import fitnessPhoto from '../photos/30up_fitness.webp'
 </script>
 
 <template>
@@ -22,7 +22,7 @@ import fitnessPhoto from '../photos/30up_fitness.png'
       <div class="max-w-lg">
         <span class="eyebrow">Energy for your era</span>
         <p class="mt-4 text-3xl font-extrabold leading-tight text-white drop-shadow-md sm:text-4xl">
-          For workouts, walks, and weekend projects —
+          For workouts, walks, and weekend projects,
           <span class="text-razz-300">without the pre-workout chaos.</span>
         </p>
         <p class="mt-5 max-w-md text-lg text-slate-100 drop-shadow">

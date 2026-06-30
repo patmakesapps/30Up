@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/photos/logo-full.png" alt="30Up — Energy for grown-up life" width="420" />
+<img src="src/photos/logo-full.webp" alt="30Up — Energy for grown-up life" width="420" />
 
 # 30Up — Energy for Grown-Up Life
 
@@ -14,7 +14,7 @@ Built with **Vue 3 · Vite · TypeScript · Tailwind CSS · Firebase**
 ---
 
 <div align="center">
-<img src="src/photos/package_01.png" alt="30Up Blue Razz Lemonade box and stick pack" width="80%" />
+<img src="src/photos/package_01.webp" alt="30Up Blue Razz Lemonade box and stick pack" width="80%" />
 </div>
 
 ## ✨ Highlights
@@ -62,12 +62,12 @@ This project uses Firebase (Firestore + Auth) for project **`up-3fcd5`**.
 
 <table>
   <tr>
-    <td width="50%"><img src="src/photos/30up_pour_01.png" alt="Pouring a 30Up stick pack into a water bottle" /></td>
-    <td width="50%"><img src="src/photos/30up_fitness.png" alt="30Up shaker bottle with a dumbbell and gym towel" /></td>
+    <td width="50%"><img src="src/photos/30up_pour_01.webp" alt="Pouring a 30Up stick pack into a water bottle" /></td>
+    <td width="50%"><img src="src/photos/30up_fitness.webp" alt="30Up shaker bottle with a dumbbell and gym towel" /></td>
   </tr>
   <tr>
-    <td width="50%"><img src="src/photos/30up_powder_close_up.png" alt="Close-up of 30Up powder pouring from a stick pack" /></td>
-    <td width="50%"><img src="src/photos/30up_water_close_up.png" alt="Top-down macro of electric-blue Blue Razz Lemonade" /></td>
+    <td width="50%"><img src="src/photos/30up_powder_close_up.webp" alt="Close-up of 30Up powder pouring from a stick pack" /></td>
+    <td width="50%"><img src="src/photos/30up_water_close_up.webp" alt="Top-down macro of electric-blue Blue Razz Lemonade" /></td>
   </tr>
 </table>
 

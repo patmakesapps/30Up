@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import heroPhoto from '../photos/30up_water_close_up.png'
-import logoMark from '../photos/logo-mark.png'
+import heroPhoto from '../photos/30up_water_close_up.webp'
+import logoMark from '../photos/logo-mark.webp'
 </script>
 
 <template>
@@ -38,7 +38,7 @@ import logoMark from '../photos/logo-mark.png'
         </h1>
 
         <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-slate-100 drop-shadow">
-          A powdered energy drink mix for adults 30+ — made for work, family,
+          A powdered energy drink mix for adults 30+, made for work, family,
           workouts, errands, and long days.
         </p>
 

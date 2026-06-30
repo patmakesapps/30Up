@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 import BaseSelect from './BaseSelect.vue'
-import pourPhoto from '../photos/30up_pour_01.png'
+import pourPhoto from '../photos/30up_pour_01.webp'
 
 interface WaitlistForm {
   email: string
@@ -15,14 +15,14 @@ interface WaitlistForm {
 }
 
 // Reusable option arrays for the select fields
-const ageRanges = ['30–39', '40–49', '50–59', '60+', 'Under 30 but interested']
+const ageRanges = ['Under 30', '30-39', '40-49', '50-59', '60+']
 const buyOptions = [
   'Yes, 10-stick box',
   'Yes, 20-serving pouch',
   'Maybe',
   'Not yet',
 ]
-const caffeineLevels = ['80–100 mg', '100–150 mg', '150–200 mg', 'Not sure']
+const caffeineLevels = ['80-100 mg', '100-150 mg', '150-200 mg', 'Not sure']
 const energySources = [
   'Coffee',
   'Energy drinks',

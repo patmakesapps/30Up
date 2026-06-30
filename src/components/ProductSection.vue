@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import productPhoto from '../photos/package_01.png'
+import productPhoto from '../photos/package_01.webp'
 
 interface Feature {
   title: string
@@ -23,7 +23,7 @@ const features: Feature[] = [
       <span class="eyebrow">The Product</span>
       <h2 class="section-title mt-3">First up: Blue Razz Lemonade.</h2>
       <p class="mt-6 text-lg text-slate-300">
-        30Up Blue Razz Lemonade is the first planned flavor — a bright blue
+        30Up Blue Razz Lemonade is the first planned flavor: a bright blue
         raspberry lemonade energy powder designed to mix with water and fit into
         your day without the canned chaos.
       </p>
