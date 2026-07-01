@@ -8,7 +8,6 @@
 // Left-side totals are display-only; authoritative pricing happens server-side.
 // NO order is created here.
 import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import { useCart } from '../composables/useCart'
@@ -23,8 +22,11 @@ interface ProductMeta {
   inventoryCount: number
 }
 
-const router = useRouter()
 const { items, setQty, remove } = useCart()
+
+// Empty cart shows a dedicated empty state (not a redirect to /shop, which looks
+// identical to the shop and confuses people who just wanted to view their cart).
+const isEmpty = computed(() => items.value.length === 0)
 
 // Product details cached by id so the summary updates instantly on qty changes
 // (no per-click Firestore round-trip).
@@ -95,10 +97,7 @@ async function createSession() {
   error.value = null
   teardown()
   try {
-    if (items.value.length === 0) {
-      router.replace('/shop')
-      return
-    }
+    if (items.value.length === 0) return // empty state handles the UI
     const { data } = await createCheckoutSession({
       cart: items.value,
       origin: window.location.origin,
@@ -134,15 +133,11 @@ function removeLine(productId: string) {
 
 onMounted(async () => {
   if (items.value.length === 0) {
-    router.replace('/shop')
+    initializing.value = false
     return
   }
   await loadProducts()
-  if (items.value.length === 0) {
-    router.replace('/shop')
-    return
-  }
-  await createSession()
+  if (items.value.length > 0) await createSession()
   initializing.value = false
 })
 
@@ -154,8 +149,7 @@ watch(
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(async () => {
       if (items.value.length === 0) {
-        teardown()
-        router.replace('/shop')
+        teardown() // show the empty state; no session needed
         return
       }
       await loadProducts()
@@ -173,7 +167,21 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="container-pad py-12">
-    <div class="grid gap-10 lg:grid-cols-2">
+    <!-- Empty cart -->
+    <div
+      v-if="isEmpty"
+      class="mx-auto max-w-md rounded-2xl border border-dashed border-white/10 px-6 py-16 text-center"
+    >
+      <div class="text-4xl" aria-hidden="true">🛒</div>
+      <h1 class="mt-4 text-2xl font-bold text-white">Your cart is empty</h1>
+      <p class="mt-2 text-slate-400">
+        Looks like you haven't added anything yet.
+      </p>
+      <RouterLink to="/shop" class="btn-primary mt-6 inline-block">Browse the shop</RouterLink>
+    </div>
+
+    <!-- Cart + checkout -->
+    <div v-else class="grid gap-10 lg:grid-cols-2">
       <!-- LEFT: editable order summary -->
       <div>
         <RouterLink to="/shop" class="text-sm text-slate-400 hover:text-white">

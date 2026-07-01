@@ -2,7 +2,7 @@
 // Storefront product grid. Reads ONLY active products (firestore.rules enforces
 // active == true for public reads; the query mirrors that). Add-to-cart stores
 // just { productId, qty } — no prices client-side.
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../firebase'
 import type { ProductDoc } from '../types/models'
@@ -11,8 +11,14 @@ import { formatCents } from '../utils/money'
 
 const products = ref<ProductDoc[]>([])
 const loading = ref(true)
-const { add, count } = useCart()
-const justAdded = ref<string | null>(null)
+const { items, add, setQty, count } = useCart()
+
+// Reactive lookup of how many of each product is currently in the cart.
+const qtyById = computed(() => {
+  const map: Record<string, number> = {}
+  for (const l of items.value) map[l.productId] = l.qty
+  return map
+})
 
 let unsub: (() => void) | null = null
 
@@ -31,10 +37,14 @@ onUnmounted(() => unsub?.())
 
 function addToCart(p: ProductDoc) {
   add(p.id, 1)
-  justAdded.value = p.id
-  setTimeout(() => {
-    if (justAdded.value === p.id) justAdded.value = null
-  }, 1500)
+}
+function inc(p: ProductDoc) {
+  const current = qtyById.value[p.id] ?? 0
+  if (current < p.inventoryCount) setQty(p.id, current + 1)
+}
+function dec(p: ProductDoc) {
+  const current = qtyById.value[p.id] ?? 0
+  setQty(p.id, current - 1) // useCart removes the line at 0
 }
 </script>
 
@@ -79,21 +89,44 @@ function addToCart(p: ProductDoc) {
         <div class="flex flex-1 flex-col p-5">
           <h2 class="font-bold text-white">{{ p.name }}</h2>
           <p class="mt-1 line-clamp-2 text-sm text-slate-400">{{ p.description }}</p>
-          <div class="mt-4 flex items-center justify-between">
+          <div class="mt-4 flex items-center justify-between gap-3">
             <span class="text-lg font-semibold text-white">{{ formatCents(p.priceCents) }}</span>
-            <button
-              type="button"
-              class="btn-primary"
-              :disabled="p.inventoryCount < 1"
-              @click="addToCart(p)"
+
+            <!-- Sold out -->
+            <button v-if="p.inventoryCount < 1" type="button" class="btn-primary" disabled>
+              Sold out
+            </button>
+
+            <!-- In cart: qty stepper -->
+            <div
+              v-else-if="qtyById[p.id]"
+              class="inline-flex items-center rounded-lg border border-white/15"
             >
-              {{
-                p.inventoryCount < 1
-                  ? 'Sold out'
-                  : justAdded === p.id
-                    ? 'Added ✓'
-                    : 'Add to cart'
-              }}
+              <button
+                type="button"
+                class="px-3 py-1.5 text-slate-300 hover:text-white"
+                aria-label="Decrease quantity"
+                @click="dec(p)"
+              >
+                −
+              </button>
+              <span class="min-w-[2rem] text-center text-sm font-medium text-white">
+                {{ qtyById[p.id] }}
+              </span>
+              <button
+                type="button"
+                class="px-3 py-1.5 text-slate-300 hover:text-white disabled:opacity-40"
+                aria-label="Increase quantity"
+                :disabled="qtyById[p.id] >= p.inventoryCount"
+                @click="inc(p)"
+              >
+                +
+              </button>
+            </div>
+
+            <!-- Not in cart -->
+            <button v-else type="button" class="btn-primary" @click="addToCart(p)">
+              Add to cart
             </button>
           </div>
         </div>

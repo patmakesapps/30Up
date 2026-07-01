@@ -9,6 +9,7 @@ import {
   type ProductInput,
 } from '../../services/adminProducts'
 import { dollarsToCents, centsToDollarsInput } from '../../utils/money'
+import ProductImageUploader from './ProductImageUploader.vue'
 
 const props = defineProps<{ product: ProductDoc | null }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'saved'): void }>()
@@ -23,7 +24,7 @@ const form = reactive({
   sku: '',
   inventoryCount: 0,
   active: true,
-  imagesText: '', // one URL per line
+  images: [] as string[], // download URLs, images[0] is primary
 })
 
 const error = ref<string | null>(null)
@@ -40,7 +41,7 @@ watch(
     form.sku = p?.sku ?? ''
     form.inventoryCount = p?.inventoryCount ?? 0
     form.active = p?.active ?? true
-    form.imagesText = p?.images?.join('\n') ?? ''
+    form.images = p?.images ? [...p.images] : []
   },
   { immediate: true },
 )
@@ -63,11 +64,6 @@ function buildInput(): ProductInput | null {
     error.value = 'Inventory must be a whole number of 0 or more.'
     return null
   }
-  const images = form.imagesText
-    .split('\n')
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0)
-
   return {
     name: form.name.trim(),
     description: form.description.trim(),
@@ -75,7 +71,7 @@ function buildInput(): ProductInput | null {
     sku: form.sku.trim(),
     inventoryCount: form.inventoryCount,
     active: form.active,
-    images,
+    images: form.images,
   }
 }
 
@@ -207,17 +203,11 @@ async function handleSubmit() {
 
           <!-- Images -->
           <div>
-            <label for="p-imgs" class="mb-1.5 block text-sm font-semibold text-white">
-              Image URLs
-            </label>
-            <textarea
-              id="p-imgs"
-              v-model="form.imagesText"
-              rows="3"
-              class="w-full rounded-xl border border-white/15 bg-ink-900/60 px-4 py-2.5 font-mono text-xs text-white placeholder:text-slate-500 focus:border-razz-400"
-              placeholder="https://…/front.webp&#10;https://…/back.webp"
-            ></textarea>
-            <p class="mt-1 text-xs text-slate-500">One URL per line.</p>
+            <label class="mb-1.5 block text-sm font-semibold text-white">Images</label>
+            <ProductImageUploader v-model="form.images" />
+            <p class="mt-1 text-xs text-slate-500">
+              The first image is used as the primary storefront photo.
+            </p>
           </div>
 
           <!-- Active toggle -->

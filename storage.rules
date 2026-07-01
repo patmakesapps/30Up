@@ -1,0 +1,33 @@
+rules_version = '2';
+
+// Storage rules for 30Up.
+//
+// Product images are PUBLIC to read (the storefront shows them) but only an
+// admin may upload/replace/delete them. Admin is proven by the same custom
+// claim used everywhere else: request.auth.token.admin == true. These rules are
+// evaluated server-side by Firebase — this is real access control, not UI hiding.
+//
+// Deploy: `firebase deploy --only storage`
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Product imagery. Uploads are restricted to admins, capped at 5 MB, and
+    // must be an image content type.
+    match /products/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Everything else: locked down by default.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
