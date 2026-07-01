@@ -11,3 +11,4 @@ import './firebaseAdmin'
 
 export { createProduct, updateProduct, setProductActive } from './products'
 export { createCheckoutSession, sessionStatus } from './checkout'
+export { stripeWebhook } from './webhook'
