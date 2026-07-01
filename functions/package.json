@@ -1,0 +1,25 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for 30Up commerce (admin, checkout, Stripe webhook)",
+  "private": true,
+  "engines": {
+    "node": "20"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.3.2",
+    "stripe": "^18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

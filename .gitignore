@@ -7,6 +7,17 @@ dist-ssr
 .env
 .env.*
 !.env.example
+# functions/.env holds only NON-secret function params (safe to commit).
+!functions/.env
+
+# Stripe / server-side secrets — NEVER commit these
+stripe_secrets.txt
+functions/.secret.local
+
+# Admin bootstrap — local utility + its service-account key. Never commit either:
+# the key is a credential, and the script stays a local-only admin tool.
+setAdmin.key.json
+setAdmin.mjs
 
 # Editor / tooling local state
 .claude/

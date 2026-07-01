@@ -1,0 +1,9 @@
+# Compiled output
+lib/
+
+# Dependencies
+node_modules/
+
+# Runtime secrets loaded by the emulator (already covered by root .gitignore too)
+.secret.local
+.runtimeconfig.json

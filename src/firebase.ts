@@ -8,6 +8,7 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
+import { getFunctions } from 'firebase/functions'
 import { getAnalytics, isSupported } from 'firebase/analytics'
 
 const firebaseConfig = {
@@ -27,6 +28,10 @@ export const db = getFirestore(app)
 
 // Auth instance used for account creation / sign-in.
 export const auth = getAuth(app)
+
+// Callable Cloud Functions client. Region must match where functions deploy
+// (default us-central1). Used by the admin panel and checkout from Phase 3 on.
+export const functions = getFunctions(app, 'us-central1')
 
 // Google Analytics — only initialized in browsers that support it.
 isSupported()

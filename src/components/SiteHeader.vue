@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuth } from '../composables/useAuth'
+import { useCart } from '../composables/useCart'
 import logoMark from '../photos/logo-mark.webp'
 
 // Section links resolve to the home route + hash so they work from any page.
@@ -12,6 +13,7 @@ const navLinks = [
 ]
 
 const { user } = useAuth()
+const { count } = useCart()
 const mobileOpen = ref(false)
 
 function closeMenu() {
@@ -42,6 +44,25 @@ function closeMenu() {
       </ul>
 
       <div class="hidden items-center gap-3 md:flex">
+        <RouterLink
+          to="/shop"
+          class="text-sm font-medium text-slate-300 transition-colors hover:text-white"
+        >
+          Shop
+        </RouterLink>
+        <RouterLink
+          to="/checkout"
+          class="relative text-sm font-medium text-slate-300 transition-colors hover:text-white"
+          aria-label="Cart"
+        >
+          Cart
+          <span
+            v-if="count > 0"
+            class="ml-1 rounded-full bg-razz-500 px-1.5 py-0.5 text-xs font-semibold text-white"
+          >
+            {{ count }}
+          </span>
+        </RouterLink>
         <RouterLink
           v-if="user"
           to="/account"

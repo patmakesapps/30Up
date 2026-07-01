@@ -19,12 +19,47 @@ import { auth } from '../firebase'
 
 const user = ref<User | null>(null)
 const authReady = ref(false)
+// Whether the signed-in user carries the { admin: true } custom claim.
+// This is derived from the Firebase ID token, which is verified by Firebase —
+// it is NOT something the client can set. Server-side rules/functions re-check
+// the same claim; this ref only drives UI/route decisions.
+const isAdmin = ref(false)
+
+// Read the admin custom claim off the current user's ID token.
+async function resolveAdminClaim(u: User | null): Promise<void> {
+  if (!u) {
+    isAdmin.value = false
+    return
+  }
+  try {
+    const token = await u.getIdTokenResult()
+    isAdmin.value = token.claims.admin === true
+  } catch {
+    isAdmin.value = false
+  }
+}
 
 // Start listening once, as soon as this module is first imported.
-onAuthStateChanged(auth, (u) => {
+// We resolve the admin claim BEFORE flipping authReady so route guards can
+// trust isAdmin the moment they run.
+onAuthStateChanged(auth, async (u) => {
   user.value = u
+  await resolveAdminClaim(u)
   authReady.value = true
 })
+
+// Force-refresh the ID token and re-read claims. Call this right after an admin
+// claim is granted server-side so the user doesn't have to fully sign out/in.
+async function refreshClaims(): Promise<boolean> {
+  const u = auth.currentUser
+  if (!u) {
+    isAdmin.value = false
+    return false
+  }
+  await u.getIdToken(true) // bust the cached token
+  await resolveAdminClaim(u)
+  return isAdmin.value
+}
 
 async function signUp(email: string, password: string, displayName?: string) {
   const cred = await createUserWithEmailAndPassword(auth, email, password)
@@ -54,6 +89,8 @@ export function useAuth() {
   return {
     user,
     authReady,
+    isAdmin,
+    refreshClaims,
     signUp,
     logIn,
     logOut,

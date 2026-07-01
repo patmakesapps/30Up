@@ -1,16 +1,25 @@
 rules_version = '2';
 
-// Security rules for the 30Up waitlist.
+// Security rules for 30Up.
 //
-// Goal: let anyone SUBMIT to the waitlist from the website, but never let the
-// public READ, UPDATE, or DELETE entries (so emails stay private).
+// Principles (do not weaken these):
+//  - Admin is proven by a custom auth claim: request.auth.token.admin == true.
+//    Set server-side via the Admin SDK (see Phase 2). Hiding UI is NOT access control.
+//  - orders + adminLogs are written ONLY by Cloud Functions using the Admin SDK,
+//    which bypasses these rules. Therefore client writes to them are always denied.
+//  - Money is always integer cents. Rules validating amounts assume ints.
 //
-// Deploy via the Firebase Console (Firestore Database → Rules → paste → Publish)
-// or the CLI: `firebase deploy --only firestore:rules`
+// Deploy: `firebase deploy --only firestore:rules`
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // True when the signed-in caller carries the admin custom claim.
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    // ---- Waitlist (existing) --------------------------------------------
     match /waitlist/{docId} {
       // Public can create new signups, with light validation.
       allow create: if
@@ -20,6 +29,33 @@ service cloud.firestore {
 
       // No public reads/edits/deletes — view entries in the Firebase Console.
       allow read, update, delete: if false;
+    }
+
+    // ---- Products -------------------------------------------------------
+    // Public storefront reads only ACTIVE products (per-doc check; storefront
+    // queries must filter active == true or a list() will be denied).
+    // Admins may read every product (incl. inactive) for the admin panel.
+    // All writes flow through callable Cloud Functions (Admin SDK), but we also
+    // allow direct admin writes per the spec — non-admins can never write.
+    match /products/{productId} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ---- Orders ---------------------------------------------------------
+    // Readable only by admins. NEVER writable from a client — the Stripe
+    // webhook (Admin SDK) is the sole source of truth for order creation and
+    // status changes.
+    match /orders/{orderId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // ---- Admin audit log ------------------------------------------------
+    // Append-only trail, written by Cloud Functions (Admin SDK) only.
+    match /adminLogs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false;
     }
   }
 }

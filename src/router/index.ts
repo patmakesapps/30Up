@@ -23,6 +23,42 @@ const router = createRouter({
       component: () => import('../views/AccountView.vue'),
       meta: { requiresAuth: true },
     },
+    // Storefront + checkout (public; checkout does not require an account).
+    {
+      path: '/shop',
+      name: 'shop',
+      component: () => import('../views/ShopView.vue'),
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: () => import('../views/CheckoutView.vue'),
+    },
+    {
+      path: '/checkout/return',
+      name: 'checkout-return',
+      component: () => import('../views/CheckoutReturnView.vue'),
+    },
+    // Admin area — guarded by requiresAdmin (auth + admin custom claim).
+    // `meta.admin` tells App.vue to drop the storefront header/footer chrome.
+    {
+      path: '/admin',
+      component: () => import('../layouts/AdminLayout.vue'),
+      meta: { requiresAdmin: true, admin: true },
+      children: [
+        { path: '', redirect: { name: 'admin-products' } },
+        {
+          path: 'products',
+          name: 'admin-products',
+          component: () => import('../views/admin/AdminProductsView.vue'),
+        },
+        {
+          path: 'orders',
+          name: 'admin-orders',
+          component: () => import('../views/admin/AdminOrdersView.vue'),
+        },
+      ],
+    },
     // Unknown routes fall back to home.
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
@@ -52,11 +88,24 @@ function whenAuthReady(): Promise<void> {
 
 router.beforeEach(async (to) => {
   await whenAuthReady()
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
 
   // Protect account routes.
   if (to.meta.requiresAuth && !user.value) {
     return { name: 'auth', query: { redirect: to.fullPath } }
+  }
+
+  // Protect the admin area: must be signed in AND carry the admin claim.
+  // The claim is verified from the Firebase ID token (resolved before
+  // authReady flips), and re-checked server-side on every write.
+  if (to.meta.requiresAdmin) {
+    if (!user.value) {
+      return { name: 'auth', query: { redirect: to.fullPath } }
+    }
+    if (!isAdmin.value) {
+      // Signed in but not an admin — send them to their account, not the login.
+      return { name: 'account' }
+    }
   }
 
   // Keep signed-in users out of the login page.
