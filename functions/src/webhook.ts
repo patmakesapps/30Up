@@ -15,6 +15,7 @@ import { FieldValue } from 'firebase-admin/firestore'
 import Stripe from 'stripe'
 import { db } from './firebaseAdmin'
 import { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET } from './secrets'
+import { sendOrderConfirmation } from './email'
 
 const REGION = 'us-central1'
 
@@ -114,12 +115,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   // inventory decrement.
   const orderRef = db.collection('orders').doc(full.id)
 
-  await db.runTransaction(async (tx) => {
+  const created = await db.runTransaction(async (tx) => {
     // --- all reads first ---
     const existing = await tx.get(orderRef)
     if (existing.exists) {
       logger.info('Order already exists; idempotent no-op', { sessionId: full.id })
-      return
+      return false
     }
     const productIds = [...qtyByProduct.keys()]
     const productRefs = productIds.map((id) => db.collection('products').doc(id))
@@ -151,9 +152,21 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
     })
+    return true
   })
 
-  logger.info('Order created', { sessionId: full.id, items: items.length })
+  if (created) {
+    logger.info('Order created', { sessionId: full.id, items: items.length })
+    // Phase 7 hook: order confirmation email (no-op stub for now). Kept outside
+    // the transaction and only on first creation, so redeliveries don't re-send.
+    await sendOrderConfirmation({
+      orderId: full.id,
+      customerEmail: full.customer_details?.email ?? '',
+      customerName: shipping.name,
+      amountTotalCents: full.amount_total ?? 0,
+      currency: full.currency ?? 'usd',
+    })
+  }
 }
 
 // ---- charge.refunded ------------------------------------------------------

@@ -51,7 +51,9 @@ Project: `up-3fcd5` · Region: `us-central1` · Payments: Stripe Embedded Checko
 | `createProduct` / `updateProduct` / `setProductActive` | callable | — | Admin product writes; re-check admin + write `adminLogs`. |
 | `createCheckoutSession` | callable | `STRIPE_SECRET_KEY` | Server-authoritative pricing, stock check, creates Embedded Checkout session. No order write. |
 | `sessionStatus` | callable | `STRIPE_SECRET_KEY` | Read-only status for the return page. |
-| `stripeWebhook` | onRequest | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | **Source of truth for orders.** Not yet deployed (see below). |
+| `stripeWebhook` | onRequest | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | **Source of truth for orders.** Deployed; uses a placeholder webhook secret until go-live (see checklist). |
+| `updateOrderStatus` / `addOrderNote` / `setTracking` | callable | — | Order fulfillment ops; admin re-check + `adminLogs`. |
+| `refundOrder` | callable | `STRIPE_SECRET_KEY` | Issues a Stripe refund; status flips via `charge.refunded` webhook. |
 
 ---
 
@@ -79,12 +81,33 @@ Embedded Checkout (plain-JS mount). `/shop` with qty steppers, editable cart wit
 empty state, `/checkout/return` confirmation. `automatic_tax` behind
 `AUTOMATIC_TAX_ENABLED` flag.
 
-### Phase 5 — Webhook + order creation + inventory ✅ built · ⏳ not deployed
+### Phase 5 — Webhook + order creation + inventory ✅ deployed
 `stripeWebhook` (onRequest): verifies signature against `req.rawBody`; on
 `checkout.session.completed` creates the authoritative order (`status: 'paid'`)
 and decrements inventory **atomically + idempotently** (order doc id = session id,
 transaction no-ops if it already exists); `charge.refunded` → `status: 'refunded'`.
-**Test locally with the Stripe CLI before deploying** (see below).
+Deployed, but the production webhook secret is still a placeholder — real events
+won't verify until the go-live secret swap. Local testing via Stripe CLI below.
+
+### Phase 6 — Orders table + detail + operations ✅ deployed
+Real-time orders table (`AdminOrdersView`) with status filter, customer/email/id
+search, and sorting. Row opens `OrderDetailDrawer`: full order, shipping, items,
+Stripe payment link, and controls backed by callables `updateOrderStatus` /
+`addOrderNote` (append-only) / `setTracking`. The drawer reflects live updates
+(e.g. a refund flipping status) via the shared onSnapshot list.
+
+### Phase 7 — Transactional emails ⏳ placeholder only
+`functions/src/email.ts` has no-op stubs `sendOrderConfirmation` (called from the
+webhook on order creation) and `sendShippedEmail` (called from `setTracking`).
+Call sites are wired; Phase 7 is "pick Resend/SendGrid, add its API key as a
+defineSecret, render templates, send." Stubs swallow errors so email never breaks
+a webhook or fulfillment write.
+
+### Phase 8 — Refunds ✅ deployed
+`refundOrder` callable issues a full Stripe refund via the payment intent and
+writes `adminLogs`. It does NOT set status — the `charge.refunded` webhook flips
+it to `refunded`, keeping a single source of truth. Refund button lives in the
+order detail drawer.
 
 ---
 
@@ -161,15 +184,13 @@ decremented; redelivering the event is an idempotent no-op.
 - [ ] Upgrade functions runtime Node 20 → 22 (Node 20 decommission 2026-10-30).
 - [ ] Set Artifact Registry cleanup policy: `firebase functions:artifacts:setpolicy`.
 - [ ] Real product data entered via `/admin` (no seed scripts).
+- [ ] In `OrderDetailDrawer.vue`, change the Stripe dashboard link base from
+      `/test/payments/` to `/payments/` for live mode.
 
 ---
 
-## Remaining phases (post-Phase 5)
+## Remaining work (post-Phase 8)
 
-- **Phase 6 — Orders table + detail + operations:** real-time orders table
-  (sort/filter), detail drawer, callables `updateOrderStatus` / `addOrderNote` /
-  `setTracking` (admin re-check + `adminLogs`). `AdminOrdersView` is a placeholder.
-- **Phase 7 — Transactional emails:** order confirmation + shipped emails
-  (Resend or SendGrid), minimal templates.
-- **Phase 8 — Refunds:** `refundOrder` callable (Stripe refund API); let the
-  `charge.refunded` webhook flip the status (single source of truth).
+- **Phase 7 — Transactional emails:** implement the two stubs in
+  `functions/src/email.ts` (order confirmation + shipped) with Resend or SendGrid.
+  Call sites are already wired in `webhook.ts` and `orders.ts`.
