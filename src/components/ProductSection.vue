@@ -6,13 +6,13 @@ interface Feature {
   icon: string
 }
 
-// Reusable feature card data ("planned" used where formula details could change)
+// Reusable feature card data
 const features: Feature[] = [
   { title: 'Adult energy drink mix', icon: '⚡' },
-  { title: 'Caffeine + electrolytes + B vitamins', icon: '🧪' },
-  { title: 'Zero sugar planned', icon: '🚫' },
-  { title: 'No artificial dyes planned', icon: '🎨' },
-  { title: 'Portable powder format', icon: '🎒' },
+  { title: 'Caffeine + L-theanine + creatine', icon: '🧪' },
+  { title: 'Real electrolytes + B-complex', icon: '💧' },
+  { title: 'Zero sugar', icon: '🚫' },
+  { title: 'No artificial dyes', icon: '🎨' },
   { title: 'Built for long days', icon: '🌙' },
 ]
 </script>

@@ -37,9 +37,9 @@ import logoMark from '../photos/logo-mark.webp'
           Energy for grown-up life.
         </h1>
 
-        <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-slate-100 drop-shadow">
-          A powdered energy drink mix for adults 30+, made for work, family,
-          workouts, errands, and long days.
+        <p class="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-100 drop-shadow">
+          A powdered energy drink mix for adults 30+,<br class="hidden sm:block" />
+          made for work, family, workouts, errands, and long days.
         </p>
 
         <p
@@ -56,14 +56,6 @@ import logoMark from '../photos/logo-mark.webp'
           <RouterLink :to="{ path: '/', hash: '#product' }" class="btn-secondary backdrop-blur-sm">
             See the Product
           </RouterLink>
-        </div>
-
-        <div class="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs font-semibold uppercase tracking-wider text-slate-200">
-          <span>Zero Sugar</span>
-          <span class="text-white/30">•</span>
-          <span>No Artificial Dyes</span>
-          <span class="text-white/30">•</span>
-          <span>Caffeine · Electrolytes · B Vitamins</span>
         </div>
       </div>
     </div>
